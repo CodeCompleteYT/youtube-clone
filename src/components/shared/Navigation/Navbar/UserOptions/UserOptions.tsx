@@ -1,14 +1,17 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import SignInButton from "./SignInButton";
 import { CurrentUserContext } from "@/context/CurrentUserContext";
 import IconButton from "@/components/shared/IconButton";
 import { MdOutlineVideoCall } from "react-icons/md";
 import Avatar, { AvatarSize } from "@/components/shared/Avatar";
+import UserMenu from "./UserMenu";
 
 const UserOptions = () => {
   const currentUser = useContext(CurrentUserContext);
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return currentUser ? (
     <>
@@ -19,9 +22,10 @@ const UserOptions = () => {
         <Avatar
           size={AvatarSize.small}
           imageSrc={currentUser.image}
-          onClick={() => {}}
+          onClick={() => setMenuOpen(true)}
         />
       </div>
+      {menuOpen ? <UserMenu onClose={() => setMenuOpen(false)} /> : null}
     </>
   ) : (
     <SignInButton />

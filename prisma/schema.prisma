@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  email String? @unique
+  emailVerified DateTime?
+  image String?
+  createdAt DateTime @default(now())
+  subscribedChannelIds String[] @db.ObjectId
+  likedVideoIds String[] @db.ObjectId
+  dislikedVideoIds String[] @db.ObjectId
+
+  account Account?
+  channel Channel?
+}
+
+model Account {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId @unique
+  type String
+  provider String
+  providerAccountId String
+  refresh_token String? @db.String
+  access_token String? @db.String
+  expires_at Int?
+  token_type String?
+  scope String?
+  id_token String? @db.String
+  session_state String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+   @@unique([provider, providerAccountId])
+}
+
+model Channel {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId @unique
+  name String
+  handle String
+  imageSrc String
+  createdAt DateTime @default(now())
+  subscriberCount Int @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade) 
+
+  comments Comment[]
+  videos Video[]
+}
+
+model Video {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  channelId String @db.ObjectId
+  title String
+  description String
+  likeCount Int @default(0)
+  dislikeCount Int @default(0)
+  viewCount Int @default(0)
+  createdAt DateTime @default(now())
+  thumbnailSrc String
+  videoSrc String
+
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  
+  comments Comment[]
+}
+
+model Comment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  videoId String @db.ObjectId
+  channelId String @db.ObjectId
+  text String
+  createdAt DateTime @default(now())
+
+  video Video @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+}

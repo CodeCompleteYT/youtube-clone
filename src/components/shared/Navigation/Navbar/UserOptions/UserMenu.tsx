@@ -6,6 +6,8 @@ import MenuItem from "./MenuItem";
 import { PiUserSquareFill, PiYoutubeLogo, PiSignOut } from "react-icons/pi";
 import { useContext } from "react";
 import { CreateChannelModalContext } from "@/context/CreateChannelModalContext";
+import { CurrentChannelContext } from "@/context/CurrentChannelContext";
+import { useRouter } from "next/navigation";
 
 interface UserMenuProps {
   onClose: () => void;
@@ -13,6 +15,10 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({ onClose }) => {
   const createChannelModal = useContext(CreateChannelModalContext);
+
+  const currentChannel = useContext(CurrentChannelContext);
+
+  const router = useRouter();
 
   return (
     <>
@@ -22,7 +28,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ onClose }) => {
           logo={<PiUserSquareFill className="h-7 w-7 mr-4" />}
           label="Your channel"
           onClick={() => {
-            createChannelModal?.onOpen();
+            if (!currentChannel) {
+              createChannelModal?.onOpen();
+            } else {
+              router.push(`/channel/${currentChannel.id}`);
+            }
+
             onClose();
           }}
         />
@@ -30,7 +41,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ onClose }) => {
           logo={<PiYoutubeLogo className="h-7 w-7 mr-4" />}
           label="YouTube Studio"
           onClick={() => {
-            createChannelModal?.onOpen();
+            if (!currentChannel) {
+              createChannelModal?.onOpen();
+            } else {
+              router.push(`/studio`);
+            }
+
             onClose();
           }}
         />

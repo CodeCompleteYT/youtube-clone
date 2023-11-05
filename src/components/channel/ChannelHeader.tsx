@@ -7,6 +7,7 @@ import Avatar, { AvatarSize } from "../shared/Avatar";
 import { compactNumberFormat } from "@/utils/numUtils";
 import Link from "next/link";
 import Button from "../shared/Button";
+import SubscribeButton from "../shared/SubscribeButton";
 
 interface ChannelHeaderProps {
   channel: Channel;
@@ -39,7 +40,7 @@ const ChannelHeader: React.FC<ChannelHeaderProps> = ({
           <Button type="rounded-dark">Manage Videos</Button>
         </Link>
       ) : (
-        <div>Subscribe</div>
+        <SubscribeButton channelId={channel.id} />
       )}
     </div>
   );

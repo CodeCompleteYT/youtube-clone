@@ -4,6 +4,9 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import CurrentUserProvider from "@/context/CurrentUserContext";
 import getCurrentUser from "@/actions/getCurrentUser";
+import CreateChannelModalProvider from "@/context/CreateChannelModalContext";
+import CreateChannelModal from "@/components/shared/Modal/CreateChannelModal";
+import { Toaster } from "react-hot-toast";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -25,10 +28,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        <CurrentUserProvider user={currentUser}>
-          <Navigation />
-          <div className="pt-16">{children}</div>
-        </CurrentUserProvider>
+        <CreateChannelModalProvider>
+          <Toaster toastOptions={{ position: "bottom-left" }} />
+          <CreateChannelModal />
+          <CurrentUserProvider user={currentUser}>
+            <Navigation />
+            <div className="pt-16">{children}</div>
+          </CurrentUserProvider>
+        </CreateChannelModalProvider>
       </body>
     </html>
   );

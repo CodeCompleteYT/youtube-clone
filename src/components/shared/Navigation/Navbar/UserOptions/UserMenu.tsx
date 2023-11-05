@@ -4,12 +4,16 @@ import { signOut } from "next-auth/react";
 import MenuItem from "./MenuItem";
 
 import { PiUserSquareFill, PiYoutubeLogo, PiSignOut } from "react-icons/pi";
+import { useContext } from "react";
+import { CreateChannelModalContext } from "@/context/CreateChannelModalContext";
 
 interface UserMenuProps {
   onClose: () => void;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({ onClose }) => {
+  const createChannelModal = useContext(CreateChannelModalContext);
+
   return (
     <>
       <div className="h-screen w-screen fixed z-30" onClick={onClose} />
@@ -17,10 +21,18 @@ const UserMenu: React.FC<UserMenuProps> = ({ onClose }) => {
         <MenuItem
           logo={<PiUserSquareFill className="h-7 w-7 mr-4" />}
           label="Your channel"
+          onClick={() => {
+            createChannelModal?.onOpen();
+            onClose();
+          }}
         />
         <MenuItem
           logo={<PiYoutubeLogo className="h-7 w-7 mr-4" />}
           label="YouTube Studio"
+          onClick={() => {
+            createChannelModal?.onOpen();
+            onClose();
+          }}
         />
         <MenuItem
           logo={<PiSignOut className="h-7 w-7 mr-4" />}

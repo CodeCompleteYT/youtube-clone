@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import getCurrentChannel from "@/actions/getCurrentChannel";
 import CurrentChannelProvider from "@/context/CurrentChannelContext";
 import UploadVideoModalProvider from "@/context/UploadVideoModalContext";
+import SidebarProvider from "@/context/SidebarContext";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -38,8 +39,10 @@ export default async function RootLayout({
           <CurrentUserProvider user={currentUser}>
             <CurrentChannelProvider channel={currentChannel}>
               <UploadVideoModalProvider>
-                <Navigation />
-                <div className="pt-16">{children}</div>
+                <SidebarProvider>
+                  <Navigation />
+                  <div className="pt-16">{children}</div>
+                </SidebarProvider>
               </UploadVideoModalProvider>
             </CurrentChannelProvider>
           </CurrentUserProvider>

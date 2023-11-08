@@ -6,3 +6,16 @@ body {
   @apply text-white;
   @apply bg-stone-950;
 }
+
+@layer utilities {
+  @variants responsive {
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
